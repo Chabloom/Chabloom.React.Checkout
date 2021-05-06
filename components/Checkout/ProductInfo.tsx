@@ -1,13 +1,11 @@
 import React from "react";
-
 import { Badge, createStyles, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { ProductViewModel } from "../../types";
-
-import { useAppContext } from "../../../AppContext";
+import { ProductViewModel } from "../../api";
 
 interface Props {
+  productCounts: Map<string, number>;
   products: Array<ProductViewModel>;
   formatter: Intl.NumberFormat;
 }
@@ -26,10 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const ProductInfo: React.FC<Props> = ({ products, formatter }) => {
+export const ProductInfo: React.FC<Props> = ({ productCounts, products, formatter }) => {
   const classes = useStyles();
-
-  const { productCounts } = useAppContext();
 
   return (
     <React.Fragment>

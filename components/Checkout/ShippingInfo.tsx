@@ -1,10 +1,9 @@
 import React from "react";
-
 import { Button, createStyles, Link, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAppContext } from "../../../AppContext";
 
 interface Props {
+  pickupMethod: string;
   userInfoOpen: boolean;
   billingInfoOpen: boolean;
   shippingInfoOpen: boolean;
@@ -57,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ShippingInfo: React.FC<Props> = ({
+  pickupMethod,
   userInfoOpen,
   billingInfoOpen,
   shippingInfoOpen,
@@ -88,8 +88,6 @@ export const ShippingInfo: React.FC<Props> = ({
   setSeatingLocation,
 }) => {
   const classes = useStyles();
-
-  const { pickupMethod } = useAppContext();
 
   React.useEffect(() => {
     if (pickupMethod !== "Shipping" && pickupMethod !== "In-Store") {

@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Button,
   Checkbox,
@@ -12,9 +11,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAppContext } from "../../../AppContext";
 
 interface Props {
+  pickupMethod: string;
   userInfoOpen: boolean;
   billingInfoOpen: boolean;
   setBillingInfoOpen: (billingInfoOpen: boolean) => void;
@@ -69,6 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const BillingInfo: React.FC<Props> = ({
+  pickupMethod,
   userInfoOpen,
   billingInfoOpen,
   setBillingInfoOpen,
@@ -102,8 +102,6 @@ export const BillingInfo: React.FC<Props> = ({
   setBillingAsShipping,
 }) => {
   const classes = useStyles();
-
-  const { pickupMethod } = useAppContext();
 
   if (billingInfoOpen) {
     return (

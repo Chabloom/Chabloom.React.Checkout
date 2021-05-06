@@ -1,13 +1,14 @@
 import React from "react";
-
 import { Badge, Button, createStyles, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { ProductsApi, ProductViewModel } from "../../types";
+import { AppConfigurationBase, Status } from "../../../common";
+import { ProductsApi, ProductViewModel } from "../../api";
 
-import { Status } from "../Status";
-
-import { useAppContext } from "../../../AppContext";
+interface Props {
+  config: AppConfigurationBase;
+  productCounts: Map<string, number>;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,10 +47,8 @@ const formatter = new Intl.NumberFormat("en-US", {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export const Cart: React.FC = () => {
+export const Cart: React.FC<Props> = ({ config, productCounts }) => {
   const classes = useStyles();
-
-  const { productCounts } = useAppContext();
 
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
@@ -61,7 +60,7 @@ export const Cart: React.FC = () => {
       setProcessing(true);
       setProducts([]);
       if (productCounts && productCounts.size !== 0) {
-        const api = new ProductsApi("");
+        const api = new ProductsApi(config, "");
         productCounts.forEach(async (productCount, productId) => {
           const [ret, err] = await api.readItem(productId);
           if (ret) {

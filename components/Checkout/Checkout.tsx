@@ -1,19 +1,23 @@
 import React from "react";
-
 import { AppBar, Button, Container, createStyles, Grid, Hidden, Theme, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { ProductsApi, ProductViewModel } from "../../types";
+import { AppConfigurationBase, Status } from "../../../common";
+import { OrdersApi, OrderViewModel, ProductsApi, ProductViewModel } from "../../api";
 
-import { useAppContext } from "../../../AppContext";
 import { ContactInfo } from "./ContactInfo";
 import { BillingInfo } from "./BillingInfo";
 import { ShippingInfo } from "./ShippingInfo";
 import { PaymentInfo } from "./PaymentInfo";
-import { Status } from "../Status";
 import { ProductInfo } from "./ProductInfo";
 import { PricingInfo } from "./PricingInfo";
-import { OrdersApi, OrderViewModel } from "../../types";
+
+interface Props {
+  config: AppConfigurationBase;
+  productCounts: Map<string, number>;
+  setProductCounts: React.Dispatch<React.SetStateAction<Map<string, number>>>;
+  pickupMethod: string;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,10 +66,8 @@ const formatter = new Intl.NumberFormat("en-US", {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export const Checkout: React.FC = () => {
+export const Checkout: React.FC<Props> = ({ config, productCounts, setProductCounts, pickupMethod }) => {
   const classes = useStyles();
-
-  const { productCounts, setProductCounts, pickupMethod } = useAppContext();
 
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
@@ -140,7 +142,7 @@ export const Checkout: React.FC = () => {
       setProcessing(true);
       setProducts([]);
       if (productCounts && productCounts.size !== 0) {
-        const api = new ProductsApi("");
+        const api = new ProductsApi(config, "");
         productCounts.forEach(async (productCount, productId) => {
           const [ret, err] = await api.readItem(productId);
           if (ret) {
@@ -221,6 +223,7 @@ export const Checkout: React.FC = () => {
             </div>
             <div className={classes.infoForm}>
               <BillingInfo
+                pickupMethod={pickupMethod}
                 userInfoOpen={userInfoOpen}
                 billingInfoOpen={billingInfoOpen}
                 setBillingInfoOpen={setBillingInfoOpen}
@@ -256,6 +259,7 @@ export const Checkout: React.FC = () => {
             </div>
             <div className={classes.infoForm}>
               <ShippingInfo
+                pickupMethod={pickupMethod}
                 userInfoOpen={userInfoOpen}
                 billingInfoOpen={billingInfoOpen}
                 shippingInfoOpen={shippingInfoOpen}
@@ -316,7 +320,7 @@ export const Checkout: React.FC = () => {
           </Hidden>
           <Container>
             <div className={classes.infoForm}>
-              <ProductInfo products={products} formatter={formatter} />
+              <ProductInfo productCounts={productCounts} products={products} formatter={formatter} />
               <Status processing={processing} error={error} />
             </div>
             <div className={classes.infoForm}>
@@ -344,7 +348,7 @@ export const Checkout: React.FC = () => {
                     productCounts.forEach((count, productId) => {
                       order.productCounts[productId] = count;
                     });
-                    const api = new OrdersApi();
+                    const api = new OrdersApi(config);
                     const [ret, err] = await api.addItem("", order);
                     if (ret) {
                       setProductCounts(new Map<string, number>());

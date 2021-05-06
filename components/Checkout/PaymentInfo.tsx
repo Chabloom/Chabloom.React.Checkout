@@ -1,12 +1,11 @@
 import React from "react";
-
 import { Button, createStyles, InputAdornment, Link, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import amex from "../../images/networks/amex.png";
-import visa from "../../images/networks/visa.png";
-import mastercard from "../../images/networks/mastercard.png";
-import discover from "../../images/networks/discover.png";
+import amex from "../../images/amex.png";
+import visa from "../../images/visa.png";
+import mastercard from "../../images/mastercard.png";
+import discover from "../../images/discover.png";
 
 interface Props {
   userInfoOpen: boolean;
