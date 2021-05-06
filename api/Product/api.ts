@@ -1,5 +1,4 @@
-import { AppConfiguration } from "../../../api";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { AppConfigurationBase, BaseApi, BaseApiType } from "../../../common";
 import { ProductViewModel } from "./model";
 
 export class ProductsApi extends BaseApi<ProductViewModel> implements BaseApiType<ProductViewModel> {
@@ -7,9 +6,9 @@ export class ProductsApi extends BaseApi<ProductViewModel> implements BaseApiTyp
   method: string;
   categoryId: string;
 
-  constructor(categoryId = "", method = "") {
+  constructor(config: AppConfigurationBase, categoryId = "", method = "") {
     super();
-    this.baseUrl = `${AppConfiguration.ecommerceBackendPublicAddress}/api/products`;
+    this.baseUrl = `${config.ecommerceBackendPublicAddress}/api/products`;
     this.categoryId = categoryId;
     this.method = method;
   }

@@ -1,4 +1,4 @@
-import { BaseViewModel } from "../modelBase";
+import { BaseViewModel } from "../../../common";
 
 export interface OrderViewModel extends BaseViewModel {
   readonly id: string;

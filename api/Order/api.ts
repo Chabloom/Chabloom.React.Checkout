@@ -1,14 +1,13 @@
-import { AppConfiguration } from "../../../api";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { AppConfigurationBase, BaseApi, BaseApiType } from "../../../common";
 import { OrderViewModel } from "./model";
 
 export class OrdersApi extends BaseApi<OrderViewModel> implements BaseApiType<OrderViewModel> {
   baseUrl: string;
   userId: string;
 
-  constructor(userId = "") {
+  constructor(config: AppConfigurationBase, userId = "") {
     super();
-    this.baseUrl = `${AppConfiguration.ecommerceBackendPublicAddress}/api/orders`;
+    this.baseUrl = `${config.ecommerceBackendPublicAddress}/api/orders`;
     this.userId = userId;
   }
 
