@@ -2,12 +2,14 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { OrderViewModel } from "./model";
 
 export class OrdersApi extends BaseApi<OrderViewModel> implements BaseApiType<OrderViewModel> {
-  baseUrl: string;
+  baseUrl = "";
   userId: string;
 
   constructor(userId = "") {
     super();
-    this.baseUrl = `${process.env.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`);
     this.userId = userId;
   }
 

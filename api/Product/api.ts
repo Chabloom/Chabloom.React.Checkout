@@ -2,13 +2,15 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { ProductViewModel } from "./model";
 
 export class ProductsApi extends BaseApi<ProductViewModel> implements BaseApiType<ProductViewModel> {
-  baseUrl: string;
+  baseUrl = "";
   method: string;
   categoryId: string;
 
   constructor(categoryId = "", method = "") {
     super();
-    this.baseUrl = `${process.env.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/products`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/products`);
     this.categoryId = categoryId;
     this.method = method;
   }
