@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Button, Container, createStyles, Grid, Hidden, Theme, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { AppConfigurationBase, Status } from "../../../common";
+import { Status } from "../../../common";
 import { OrdersApi, OrderViewModel, ProductsApi, ProductViewModel } from "../../api";
 
 import { ContactInfo } from "./ContactInfo";
@@ -13,7 +13,6 @@ import { ProductInfo } from "./ProductInfo";
 import { PricingInfo } from "./PricingInfo";
 
 interface Props {
-  config: AppConfigurationBase;
   productCounts: Map<string, number>;
   setProductCounts: React.Dispatch<React.SetStateAction<Map<string, number>>>;
   pickupMethod: string;
@@ -66,7 +65,7 @@ const formatter = new Intl.NumberFormat("en-US", {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export const Checkout: React.FC<Props> = ({ config, productCounts, setProductCounts, pickupMethod }) => {
+export const Checkout: React.FC<Props> = ({ productCounts, setProductCounts, pickupMethod }) => {
   const classes = useStyles();
 
   const [error, setError] = React.useState("");
@@ -142,7 +141,7 @@ export const Checkout: React.FC<Props> = ({ config, productCounts, setProductCou
       setProcessing(true);
       setProducts([]);
       if (productCounts && productCounts.size !== 0) {
-        const api = new ProductsApi(config, "");
+        const api = new ProductsApi("");
         productCounts.forEach(async (productCount, productId) => {
           const [ret, err] = await api.readItem(productId);
           if (ret) {
@@ -348,7 +347,7 @@ export const Checkout: React.FC<Props> = ({ config, productCounts, setProductCou
                     productCounts.forEach((count, productId) => {
                       order.productCounts[productId] = count;
                     });
-                    const api = new OrdersApi(config);
+                    const api = new OrdersApi();
                     const [ret, err] = await api.addItem("", order);
                     if (ret) {
                       setProductCounts(new Map<string, number>());

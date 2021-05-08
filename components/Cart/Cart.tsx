@@ -2,11 +2,10 @@ import React from "react";
 import { Badge, Button, createStyles, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { AppConfigurationBase, Status } from "../../../common";
+import { Status } from "../../../common";
 import { ProductsApi, ProductViewModel } from "../../api";
 
 interface Props {
-  config: AppConfigurationBase;
   productCounts: Map<string, number>;
 }
 
@@ -47,7 +46,7 @@ const formatter = new Intl.NumberFormat("en-US", {
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export const Cart: React.FC<Props> = ({ config, productCounts }) => {
+export const Cart: React.FC<Props> = ({ productCounts }) => {
   const classes = useStyles();
 
   const [error, setError] = React.useState("");
@@ -60,7 +59,7 @@ export const Cart: React.FC<Props> = ({ config, productCounts }) => {
       setProcessing(true);
       setProducts([]);
       if (productCounts && productCounts.size !== 0) {
-        const api = new ProductsApi(config, "");
+        const api = new ProductsApi("");
         productCounts.forEach(async (productCount, productId) => {
           const [ret, err] = await api.readItem(productId);
           if (ret) {
