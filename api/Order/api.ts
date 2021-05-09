@@ -7,9 +7,7 @@ export class OrdersApi extends BaseApi<OrderViewModel> implements BaseApiType<Or
 
   constructor(userId = "") {
     super();
-    const envConfig = 'env-config';
-    import(envConfig)
-        .then(x => this.baseUrl = `${x.config.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`);
+    this.baseUrl = `${(window as any).REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`;
     this.userId = userId;
   }
 
