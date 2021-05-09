@@ -8,7 +8,7 @@ export class ProductsApi extends BaseApi<ProductViewModel> implements BaseApiTyp
 
   constructor(categoryId = "", method = "") {
     super();
-    this.baseUrl = `${(window as any).REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/products`;
+    this.baseUrl = `${(window as any).__env__.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/products`;
     this.categoryId = categoryId;
     this.method = method;
   }
