@@ -2,30 +2,32 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { CurrencyViewModel } from "./model";
 
 export class CurrenciesApi extends BaseApi<CurrencyViewModel> implements BaseApiType<CurrencyViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/currencies`;
 
   constructor() {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/currencies`;
   }
 
-  readItems(token: string): Promise<[Array<CurrencyViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<CurrencyViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[CurrencyViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  read(token: string, itemId: string): Promise<[Response | undefined, CurrencyViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(token: string, item: CurrencyViewModel): Promise<[CurrencyViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, token, item);
+  create(
+    token: string,
+    item: CurrencyViewModel
+  ): Promise<[Response | undefined, CurrencyViewModel | undefined, string]> {
+    return this._post(`${this.baseUrl}`, token, item);
   }
 
-  editItem(token: string, item: CurrencyViewModel): Promise<[CurrencyViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+  edit(token: string, item: CurrencyViewModel): Promise<[Response | undefined, CurrencyViewModel | undefined, string]> {
+    return this._put(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(token: string, item: CurrencyViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, item: CurrencyViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${item.id}`, token);
   }
 }

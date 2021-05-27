@@ -2,33 +2,32 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { OrderViewModel } from "./model";
 
 export class OrdersApi extends BaseApi<OrderViewModel> implements BaseApiType<OrderViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`;
   userId: string;
 
   constructor(userId = "") {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_ECOMMERCE_BACKEND_ADDRESS}/api/orders`;
     this.userId = userId;
   }
 
-  readItems(token: string): Promise<[Array<OrderViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?userId=${this.userId}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<OrderViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}?userId=${this.userId}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[OrderViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, "", false);
+  read(token: string, itemId: string): Promise<[Response | undefined, OrderViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(token: string, item: OrderViewModel): Promise<[OrderViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, "", item, false);
+  create(token: string, item: OrderViewModel): Promise<[Response | undefined, OrderViewModel | undefined, string]> {
+    return this._post(`${this.baseUrl}`, "", item);
   }
 
-  editItem(token: string, item: OrderViewModel): Promise<[OrderViewModel | undefined, string]> {
+  edit(token: string, item: OrderViewModel): Promise<[Response | undefined, OrderViewModel | undefined, string]> {
     item.userId = this.userId;
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+    return this._put(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(token: string, item: OrderViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, item: OrderViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${item.id}`, token);
   }
 }

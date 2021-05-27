@@ -2,30 +2,29 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { PaymentViewModel } from "./model";
 
 export class PaymentsApi extends BaseApi<PaymentViewModel> implements BaseApiType<PaymentViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`;
 
   constructor() {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`;
   }
 
-  readItems(token: string): Promise<[Array<PaymentViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<PaymentViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[PaymentViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  read(token: string, itemId: string): Promise<[Response | undefined, PaymentViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(token: string, item: PaymentViewModel): Promise<[PaymentViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, token, item);
+  create(token: string, item: PaymentViewModel): Promise<[Response | undefined, PaymentViewModel | undefined, string]> {
+    return this._post(`${this.baseUrl}`, token, item);
   }
 
-  editItem(token: string, item: PaymentViewModel): Promise<[PaymentViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+  edit(token: string, item: PaymentViewModel): Promise<[Response | undefined, PaymentViewModel | undefined, string]> {
+    return this._put(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(token: string, item: PaymentViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, item: PaymentViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${item.id}`, token);
   }
 }

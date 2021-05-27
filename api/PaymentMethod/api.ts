@@ -2,30 +2,35 @@ import { BaseApi, BaseApiType } from "../../../common";
 import { PaymentMethodViewModel } from "./model";
 
 export class PaymentMethodsApi extends BaseApi<PaymentMethodViewModel> implements BaseApiType<PaymentMethodViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/paymentMethods`;
 
   constructor() {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/paymentMethods`;
   }
 
-  readItems(token: string): Promise<[Array<PaymentMethodViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<PaymentMethodViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[PaymentMethodViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  read(token: string, itemId: string): Promise<[Response | undefined, PaymentMethodViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(token: string, item: PaymentMethodViewModel): Promise<[PaymentMethodViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, token, item);
+  create(
+    token: string,
+    item: PaymentMethodViewModel
+  ): Promise<[Response | undefined, PaymentMethodViewModel | undefined, string]> {
+    return this._post(`${this.baseUrl}`, token, item);
   }
 
-  editItem(token: string, item: PaymentMethodViewModel): Promise<[PaymentMethodViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+  edit(
+    token: string,
+    item: PaymentMethodViewModel
+  ): Promise<[Response | undefined, PaymentMethodViewModel | undefined, string]> {
+    return this._put(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(token: string, item: PaymentMethodViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, item: PaymentMethodViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${item.id}`, token);
   }
 }

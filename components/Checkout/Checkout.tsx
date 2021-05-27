@@ -143,7 +143,7 @@ export const Checkout: React.FC<Props> = ({ productCounts, setProductCounts, pic
       if (productCounts && productCounts.size !== 0) {
         const api = new ProductsApi("");
         productCounts.forEach(async (productCount, productId) => {
-          const [ret, err] = await api.readItem(productId);
+          const [_, ret, err] = await api.read(productId);
           if (ret) {
             setProducts((prevState) => [...prevState, ret]);
           } else {
@@ -348,7 +348,7 @@ export const Checkout: React.FC<Props> = ({ productCounts, setProductCounts, pic
                       order.productCounts[productId] = count;
                     });
                     const api = new OrdersApi();
-                    const [ret, err] = await api.addItem("", order);
+                    const [_, ret, err] = await api.create("", order);
                     if (ret) {
                       setProductCounts(new Map<string, number>());
                       window.location.replace(`/orderStatus?orderId=${ret.id}`);

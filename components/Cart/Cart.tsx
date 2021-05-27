@@ -61,7 +61,7 @@ export const Cart: React.FC<Props> = ({ productCounts }) => {
       if (productCounts && productCounts.size !== 0) {
         const api = new ProductsApi("");
         productCounts.forEach(async (productCount, productId) => {
-          const [ret, err] = await api.readItem(productId);
+          const [_, ret, err] = await api.read(productId);
           if (ret) {
             setProducts((prevState) => [...prevState, ret]);
           } else {
